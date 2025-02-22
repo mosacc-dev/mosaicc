@@ -6,6 +6,7 @@ import { getPosts, toggleLike, createComment, toggleCommentLike } from "../actio
 import { Swiper, SwiperSlide } from "swiper/react";
 import Link from "next/link";
 import { Navigation, Pagination } from "swiper/modules";
+import SummaryButton from "../components/SummaryButton";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -292,6 +293,8 @@ function PostComponent({ post, handleLike, handleComments, isSingleView }) {
                             💬 <span>{comments.length}</span>
                         </button>
                     )}
+                    <SummaryButton content={post.content} />
+
 
                 </div>
 
