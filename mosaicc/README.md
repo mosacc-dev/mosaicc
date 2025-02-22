@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Hackverse 2025 - Product Requirement Document (PRD)
 
-## Getting Started
+## Product Overview
+### Introduction
+Mosaicc is a social media platform designed to create an inclusive space for individuals facing challenges like dyslexia, autism, ADHD, and other mental conditions that limit their access to information and make them feel isolated.
 
-First, run the development server:
+### Problem Statement
+People with conditions like ADHD and dyslexia lack an accessible social media platform that caters to their needs. Currently, no environment supports them adequately in an engaging and inclusive way.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### How Mosaicc Solves This Issue
+- Mosaicc provides a social media platform integrated with AI, designed to be more than just endless scrolling.
+- It ensures comprehensible information by allowing users to adjust text fonts and settings according to their preferences.
+- AI summarization breaks down long and complex posts into digestible, easy-to-understand sentences to avoid overwhelming users.
+- Offers custom color palettes and themes for accessibility.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Target Audience
+- People with dyslexia
+- Individuals with ADHD
+- Colorblind individuals
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Features & Functionalities
+### Key Features
+- Real-time chat with individuals facing similar challenges
+- Emotional support AI chatbot
+- AI-powered post summarization
+- Fully responsive on both mobile and desktop
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Technical Details
+#### Database & Integration
+- **Frontend:** React & Next.js
+- **Backend:** Next.js
+- **Authentication:** Clerk
+- **Database:** MongoDB
+- **Styling:** Tailwind CSS
+- **AI Services:** Groq API for AI summarization and emotional support chatbot
 
-## Learn More
+## Future Plans & Scalability
+- Option to host meetups and gatherings
+- AI-powered grammar correction for user comments
 
-To learn more about Next.js, take a look at the following resources:
+## UI/UX Design (Figma Links)
+- **Mobile:** [Mosaicc Mobile Design](https://www.figma.com/design/4GtIcpJGXM4A3x6zuTYV0p/Moisaicc-mobile?nodeid=0-1&t=zMR5Nbmyj1N0Y22w-1)
+- **Desktop:** [Mosaicc Desktop Design](https://www.figma.com/design/7SnWc2RCjTgmUbrORQen2V/Dygram?t=NdKXp7rSi41U2WGV-1)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
