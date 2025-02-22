@@ -1,4 +1,4 @@
-# Hackverse 2025 - Product Requirement Document (PRD)
+# Hackverse 2025
 
 ## Product Overview
 ### Introduction
