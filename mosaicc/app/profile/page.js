@@ -1,5 +1,5 @@
 "use client";
-import { useUser } from "@clerk/nextjs";
+import { UserButton, useUser } from "@clerk/nextjs";
 import { useState, useEffect } from "react";
 import imageCompression from "browser-image-compression";
 import { updateProfilePic, getProfilePic, getUserPosts } from "../actions/useraction";
@@ -79,7 +79,12 @@ export default function ProfilePage() {
 
     return (
         <div className="max-w-2xl mx-auto p-6 bg-white shadow-lg rounded-md border border-gray-200">
-            <h2 className="text-2xl font-semibold text-center mb-4">Profile Page</h2>
+            <h2 className="text-2xl font-semibold text-center mb-4">Profile Page
+<div className="m-4">
+            <UserButton />
+
+</div>
+            </h2>
             <hr className="mb-4" />
             
             {/* Profile Picture */}
