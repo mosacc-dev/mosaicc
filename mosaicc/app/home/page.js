@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { getPosts, toggleLike, createComment, toggleCommentLike } from "../actions/useraction";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Link from "next/link";
+import { FaRobot } from "react-icons/fa";
 import { Navigation, Pagination } from "swiper/modules";
 import SummaryButton from "../components/SummaryButton";
 import "swiper/css";
@@ -108,7 +109,23 @@ export default function Home() {
     return (
         <div className="min-h-screen bg-gray-100">
             <header className="bg-white shadow-md py-4 px-6 flex justify-between items-center">
-                <h1 className="text-2xl font-bold text-gray-800">DISGRAM</h1>
+                <Link href={"/"}><h1 className="text-2xl font-bold text-gray-800">DISGRAM</h1></Link>
+                <div className="flex gap-10 items-center">
+
+                    <Link href={'/profile'}><button className="flex flex-col items-center gap-1 hover:text-blue-600">
+                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        <span className="text-xs">Profile</span>
+                    </button>
+                    </Link>
+
+                    <Link href={'/chatbot'}><button className="flex flex-col items-center gap-1 hover:text-blue-600">
+                        <FaRobot/>
+                        <span className="text-xs">Chatbot</span>
+                    </button>
+                    </Link>
+                </div>
                 {selectedPost && (
                     <button onClick={goBackToHome} className="text-blue-500">
                         Back to Home
@@ -155,25 +172,6 @@ export default function Home() {
                     </svg>
                 </button>
             </Link>
-            <nav className="fixed z-30 bottom-0 left-0 right-0 bg-white shadow-lg">
-                <div className="flex justify-around p-4">
-                    <Link href={'/profile'}><button className="flex flex-col items-center gap-1 hover:text-blue-600">
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
-                        <span className="text-xs">Profile</span>
-                    </button>
-                    </Link>
-
-                    <Link href={'/chatbot'}><button className="flex flex-col items-center gap-1 hover:text-blue-600">
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
-                        <span className="text-xs">Chatbot</span>
-                    </button>
-                    </Link>
-                </div>
-            </nav>
         </div>
     );
 }

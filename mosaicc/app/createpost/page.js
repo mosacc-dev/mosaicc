@@ -1,10 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import imageCompression from "browser-image-compression";
 import { useUser } from "@clerk/nextjs";
 import { createPost } from "../actions/useraction";
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function CreatePost() {
   const [title, setTitle] = useState("");
@@ -12,19 +12,16 @@ export default function CreatePost() {
   const [imageFiles, setImageFiles] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { user,isLoaded } = useUser()
-  const router = useRouter()
-  const userId = user?.id
+  const { user, isLoaded } = useUser();
+  const router = useRouter();
+  const userId = user?.id;
 
-    useEffect(() => {
-      if (isLoaded && !user) {
-        router.push('/signup');
-      }
+  useEffect(() => {
+    if (isLoaded && !user) {
+      router.push("/signup");
+    }
+  }, [user, isLoaded, router]);
 
-    }, [user, isLoaded, router]);
-
-
-  // Handle Image Upload with Compression
   const handleImageUpload = async (e) => {
     const selectedImages = Array.from(e.target.files);
 
@@ -60,7 +57,6 @@ export default function CreatePost() {
     setImagePreviews([...imagePreviews, ...newPreviews]);
   };
 
-  // Handle Form Submission ,Only Uploads Images and max(3) at a time storage issues
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -72,7 +68,6 @@ export default function CreatePost() {
     setLoading(true);
 
     try {
-      // Upload each image to Vercel Blob
       const uploadedImageUrls = await Promise.all(
         imageFiles.map(async (file) => {
           const formData = new FormData();
@@ -86,7 +81,7 @@ export default function CreatePost() {
           if (!response.ok) throw new Error("Image upload failed");
 
           const { url } = await response.json();
-          return url; // Get the uploaded image URL
+          return url;
         })
       );
 
@@ -96,12 +91,11 @@ export default function CreatePost() {
       } else {
         alert("Post created successfully!");
         setTitle("");
-        setContent("")
+        setContent("");
         setImageFiles([]);
         setImagePreviews([]);
-        router.push('/home');
+        router.push("/home");
       }
-
     } catch (error) {
       console.error("Upload error:", error);
       alert("Failed to upload images.");
@@ -111,30 +105,27 @@ export default function CreatePost() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white shadow-lg rounded-md">
-      <h2 className="text-2xl font-semibold mb-4">Create a Post</h2>
-
+    <div className="max-w-2xl mx-auto p-6 bg-white shadow-2xl rounded-lg space-y-6">
+      <h2 className="text-3xl font-bold text-center text-gray-800">Create a Post</h2>
+      
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Title */}
         <input
           type="text"
           placeholder="Post Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="w-full p-2 border rounded-md"
+          className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
         />
 
-        {/* Content */}
         <textarea
           placeholder="Post Content"
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          className="w-full p-2 border rounded-md"
+          className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
           rows="4"
         ></textarea>
 
-        {/* Images */}
-        <label className="flex items-center justify-center w-full px-4 py-2 text-white bg-green-500 rounded-md cursor-pointer hover:bg-green-600">
+        <label className="flex flex-col items-center justify-center w-full px-4 py-3 text-white bg-blue-600 rounded-lg cursor-pointer hover:bg-blue-700">
           Upload Images (Max 3)
           <input
             type="file"
@@ -145,27 +136,30 @@ export default function CreatePost() {
           />
         </label>
 
-        {/* Previews */}
         {imagePreviews.length > 0 && (
-          <div className="mt-2">
-            <p className="text-sm font-semibold">Selected Images:</p>
-            <div className="flex space-x-2">
-              {imagePreviews.map((src, index) => (
-                <img key={index} src={src} alt="preview" className="w-20 h-20 object-cover rounded-md" />
-              ))}
-            </div>
+          <div className="grid grid-cols-3 gap-2 mt-2">
+            {imagePreviews.map((src, index) => (
+              <img key={index} src={src} alt="preview" className="w-24 h-24 object-cover rounded-lg shadow" />
+            ))}
           </div>
         )}
 
-        {/* Create Post Button */}
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-black text-white py-2 rounded-md hover:bg-gray-800"
+          className="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-900 transition-all"
         >
           {loading ? "Uploading..." : "Create Post"}
         </button>
       </form>
+
+      <div className="text-center">
+        <Link href="/home">
+          <button className="mt-4 px-6 py-2 bg-gray-300 rounded-lg hover:bg-gray-400 transition-all">
+            Back to Home
+          </button>
+        </Link>
+      </div>
     </div>
   );
 }

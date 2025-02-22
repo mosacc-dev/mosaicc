@@ -19,3 +19,15 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@layer utilities {
+  .dyslexic-font {
+    font-family: "OpenDyslexic", sans-serif;
+  }
+  .high-contrast {
+    @apply bg-black text-white;
+  }
+  .high-contrast-post {
+    @apply bg-gray-900 text-white;
+  }
+}

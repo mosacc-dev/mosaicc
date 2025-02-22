@@ -5,7 +5,6 @@ import imageCompression from "browser-image-compression";
 import { updateProfilePic, getProfilePic, getUserPosts } from "../actions/useraction";
 import { useRouter } from "next/navigation";
 
-
 export default function ProfilePage() {
     const [profilePic, setProfilePic] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -78,48 +77,51 @@ export default function ProfilePage() {
     };
 
     return (
-        <div className="max-w-[80%] mx-auto p-6 bg-white shadow-lg rounded-md text-center">
-            <h2 className="text-2xl font-semibold mb-4">Profile Page</h2>
-
-            <label className="block w-32 h-32 mx-auto rounded-full overflow-hidden border-2 border-gray-300 cursor-pointer">
-                <div
-                    className="w-full h-full flex items-center justify-center"
-                    style={profilePic ? {
-                        backgroundImage: `url(${profilePic})`,
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                    } : { backgroundColor: "#e5e7eb" }}
-                />
-                <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} disabled={loading} />
-            </label>
-
-            {loading && <p className="text-gray-500 mt-2">Uploading...</p>}
-
-            {/* User Posts Section */}
+        <div className="max-w-2xl mx-auto p-6 bg-white shadow-lg rounded-md border border-gray-200">
+            <h2 className="text-2xl font-semibold text-center mb-4">Profile Page</h2>
+            <hr className="mb-4" />
+            
+            {/* Profile Picture */}
             <div className="flex flex-col items-center">
-                <div className="grid grid-cols-3 gap-4 mt-6 w-full max-w-2xl">
-                    {userPosts.length > 0 ? (
-                        userPosts.map((post) => (
-                            <div
-                                key={post._id}
-                                className="w-full h-32 bg-gray-300 rounded-lg flex items-center justify-center cursor-pointer overflow-hidden"
-                                onClick={() => router.push(`/home?post=${post._id}`)}
-                                style={{
-                                    backgroundImage: post.images.length > 0 ? `url(${post.images[0]})` : "none",
-                                    backgroundSize: "cover",
-                                    backgroundPosition: "center",
-                                    backgroundColor: post.images.length === 0 ? "#e5e7eb" : "transparent",
-                                }}
-                            >
-                                {post.images.length === 0 && (
-                                    <p className="text-gray-700 text-sm">No Image</p>
-                                )}
-                            </div>
-                        ))
-                    ) : (
-                        <p className="text-gray-500">No posts yet.</p>
-                    )}
-                </div>
+                <label className="block w-32 h-32 rounded-full border-4 border-gray-300 overflow-hidden cursor-pointer mb-4">
+                    <div
+                        className="w-full h-full flex items-center justify-center"
+                        style={profilePic ? {
+                            backgroundImage: `url(${profilePic})`,
+                            backgroundSize: "cover",
+                            backgroundPosition: "center",
+                        } : { backgroundColor: "#e5e7eb" }}
+                    />
+                    <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} disabled={loading} />
+                </label>
+                {loading && <p className="text-gray-500">Uploading...</p>}
+            </div>
+            
+            <hr className="my-6" />
+            
+            {/* User Posts Section */}
+            <h3 className="text-lg font-semibold text-center mb-4">Your Posts</h3>
+            <div className="grid grid-cols-3 gap-4">
+                {userPosts.length > 0 ? (
+                    userPosts.map((post) => (
+                        <div
+                            key={post._id}
+                            className="w-full h-32 bg-gray-100 border border-gray-300 rounded-lg flex items-center justify-center cursor-pointer overflow-hidden shadow-sm hover:shadow-md transition"
+                            onClick={() => router.push(`/home?post=${post._id}`)}
+                            style={{
+                                backgroundImage: post.images.length > 0 ? `url(${post.images[0]})` : "none",
+                                backgroundSize: "cover",
+                                backgroundPosition: "center",
+                            }}
+                        >
+                            {post.images.length === 0 && (
+                                <p className="text-gray-700 text-sm">No Image</p>
+                            )}
+                        </div>
+                    ))
+                ) : (
+                    <p className="text-gray-500 col-span-3 text-center">No posts yet.</p>
+                )}
             </div>
         </div>
     );
