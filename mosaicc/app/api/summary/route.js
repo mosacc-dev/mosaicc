@@ -19,7 +19,7 @@ export async function POST(request) {
     const completion = await groq.chat.completions.create({
       messages: [{
         role: "user",
-        content: `Summarize this text well under 20 words: ${text}`
+        content: `Summarize this text and only highlight the important points of it don't cross 50 words: ${text}`
       }],
       model: "mixtral-8x7b-32768"
     });

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import imageCompression from "browser-image-compression";
 import { updateProfilePic, getProfilePic, getUserPosts } from "../actions/useraction";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function ProfilePage() {
     const [profilePic, setProfilePic] = useState(null);
@@ -123,6 +124,10 @@ export default function ProfilePage() {
                     <p className="text-gray-500 col-span-3 text-center">No posts yet.</p>
                 )}
             </div>
+            <Link href={"/home"}>< div className="mt-5">
+                <button className="p-5 rounded-md bg-black text-white align-middle">Back to Home</button>
+            </div>
+            </Link>
         </div>
     );
 }

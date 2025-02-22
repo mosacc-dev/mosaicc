@@ -109,7 +109,7 @@ export default function Home() {
     return (
         <div className="min-h-screen bg-gray-100">
             <header className="bg-white shadow-md py-4 px-6 flex justify-between items-center">
-                <Link href={"/"}><h1 className="text-2xl font-bold text-gray-800">DISGRAM</h1></Link>
+                <Link href={"/home"}><h1 className="text-2xl font-bold text-gray-800">Mosaicc</h1></Link>
                 <div className="flex gap-10 items-center">
 
                     <Link href={'/profile'}><button className="flex flex-col items-center gap-1 hover:text-blue-600">
