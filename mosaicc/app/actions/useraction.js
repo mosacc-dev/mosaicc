@@ -35,6 +35,7 @@ export async function createUser(name, email, username, userId) {
 
   export async function createPost(authorId, title, content, imageUrls) {
     try {
+      //Just creating post
       await dbConnect();
       const user = await User.findOne({ clerkUserId: authorId });
       if (!user) throw new Error("User not found");
@@ -58,4 +59,145 @@ export async function createUser(name, email, username, userId) {
       return { error: error.message };
     }
   }
+
+  export async function getPosts() {
+    try {
+      await dbConnect();
+  
+      const posts = await Posts.find()
+        .populate('author', 'username profilepic clerkUserId')
+        .populate('comments.author', 'username profilepic clerkUserId')
+        .sort({ createdAt: -1 })
+        .lean()
+        .transform(docs => docs.map(doc => ({
+          ...doc,
+          _id: doc._id.toString(),
+          likes: doc.likes.map(id => id.toString()),
+          author: {
+            ...doc.author,
+            _id: doc.author._id.toString(),
+            clerkUserId: doc.author.clerkUserId
+          },
+          createdAt: doc.createdAt.toISOString(),
+          updatedAt: doc.updatedAt.toISOString(),
+          comments: doc.comments.map(comment => ({
+            ...comment,
+            _id: comment._id.toString(),
+            author: { 
+              ...comment.author,
+              _id: comment.author._id.toString(),
+              clerkUserId: comment.author.clerkUserId
+            },
+            likes: comment.likes.map(id => id.toString()),
+            createdAt: comment.createdAt.toISOString()
+          }))
+        })));
+  
+      return { success: true, posts };
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+      return { error: error.message };
+    }
+  }
+
+  
+export async function toggleLike(postId, clerkUserId) {
+  try {
+    await dbConnect();
+    const user = await User.findOne({ clerkUserId });
+    if (!user) return { error: "User not found" };
+
+    const post = await Posts.findById(postId);
+    if (!post) return { error: "Post not found" };
+
+    const hasLiked = post.likes.some(id => id.equals(user._id));
+
+    if (hasLiked) {
+      post.likes.pull(user._id);
+    } else {
+      post.likes.push(user._id);
+    }
+
+    await post.save();
+    return {
+      success: true,
+      likes: post.likes.map(id => id.toString())
+    };
+  } catch (error) {
+    console.error("Like error:", error);
+    return { error: "Failed to update like" };
+  }
+}
+
+export async function createComment(postId, clerkUserId, content) {
+  try {
+    await dbConnect();
+    const user = await User.findOne({ clerkUserId });
+    if (!user) throw new Error("User not found");
+
+    const post = await Posts.findById(postId);
+    if (!post) throw new Error("Post not found");
+
+    const newComment = {
+      author: user._id,
+      content,
+      likes: []
+    };
+
+    post.comments.push(newComment);
+    await post.save();
+
+    return {
+      success: true,
+      comment: {
+        ...newComment,
+        _id: post.comments[post.comments.length - 1]._id.toString(),
+        author: {
+          _id: user._id.toString(),
+          username: user.username,
+          profilepic: user.profilepic,
+          clerkUserId: user.clerkUserId
+        },
+        createdAt: new Date().toISOString(),
+        likes: []
+      }
+    };
+  } catch (error) {
+    console.error("Error creating comment:", error);
+    return { error: error.message };
+  }
+}
+
+export async function toggleCommentLike(postId, commentId, clerkUserId) {
+  try {
+    await dbConnect();
+    const user = await User.findOne({ clerkUserId });
+    if (!user) return { error: "User not found" };
+
+    const post = await Posts.findById(postId);
+    if (!post) return { error: "Post not found" };
+
+    const comment = post.comments.id(commentId);
+    if (!comment) return { error: "Comment not found" };
+
+    const hasLiked = comment.likes.some(id => id.equals(user._id));
+
+    if (hasLiked) {
+      comment.likes.pull(user._id);
+    } else {
+      comment.likes.push(user._id);
+    }
+
+    await post.save();
+
+    return {
+      success: true,
+      likes: comment.likes.map(id => id.toString())
+    };
+  } catch (error) {
+    console.error("Comment like error:", error);
+    return { error: "Failed to update comment like" };
+  }
+}
+
 
